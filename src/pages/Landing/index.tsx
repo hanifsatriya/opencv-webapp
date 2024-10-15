@@ -1,4 +1,3 @@
-import PhotoBooth from "@/assets/image/photobooth.webp";
 import { Button, Slider, Typography } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -48,6 +47,7 @@ export const Landing = () => {
     const context = canvas.getContext("2d");
     if (!context) return;
 
+    // Set fixed canvas dimensions
     const canvasWidth = 400;
     const canvasHeight = 300;
 
@@ -58,22 +58,37 @@ export const Landing = () => {
     let drawWidth = canvasWidth;
     let drawHeight = canvasHeight;
 
+    // Adjust image dimensions based on aspect ratio
     if (aspectRatio > 1) {
-      drawHeight = canvasWidth / aspectRatio;
+      drawHeight = canvasWidth / aspectRatio; // Landscape image
     } else {
-      drawWidth = canvasHeight * aspectRatio;
+      drawWidth = canvasHeight * aspectRatio; // Portrait or square image
     }
 
-    const src = window.cv.imread(image);
+    const src = window.cv.imread(image); // Load the image into an OpenCV Mat
     const dst = new window.cv.Mat();
+
     const alpha = contrast;
     const beta = brightness;
 
+    // Apply brightness and contrast adjustments
     src.convertTo(dst, -1, alpha, beta);
-    window.cv.imshow(canvas, dst);
 
+    // Resize the image to fit the canvas
+    const resizedDst = new window.cv.Mat();
+    const dsize = new window.cv.Size(drawWidth, drawHeight); // Set the size to the calculated dimensions
+    window.cv.resize(dst, resizedDst, dsize, 0, 0, window.cv.INTER_AREA); // Use INTER_AREA for resizing
+
+    // Clear the canvas before drawing
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
+
+    // Draw the resized image on the canvas using OpenCV
+    window.cv.imshow(canvas, resizedDst);
+
+    // Clean up
     src.delete();
     dst.delete();
+    resizedDst.delete();
   };
 
   const triggerFileInput = () => {
@@ -137,7 +152,7 @@ export const Landing = () => {
               min={-100}
               max={100}
               value={brightness}
-              onChange={(e, value) => setBrightness(value as number)}
+              onChange={(_e, value) => setBrightness(value as number)}
             />
           </div>
           <div className="mb-5 w-full max-w-md">
@@ -147,7 +162,7 @@ export const Landing = () => {
               max={3}
               step={0.1}
               value={contrast}
-              onChange={(e, value) => setContrast(value as number)}
+              onChange={(_e, value) => setContrast(value as number)}
             />
           </div>
 

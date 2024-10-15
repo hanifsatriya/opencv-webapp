@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { IListDestinationPayroll } from "@/pages/admin/Payroll/SendPayroll/index.model";
 
 interface selectedSof {
   idSof: string;
@@ -12,12 +11,12 @@ interface selectedSof {
 
 export interface PayrollState {
   selectedSof: selectedSof[];
-  listDestinationPayroll: IListDestinationPayroll[];
+  // listDestinationPayroll: IListDestinationPayroll[];
 }
 
 const initialState: PayrollState = {
   selectedSof: [],
-  listDestinationPayroll: [],
+  // listDestinationPayroll: [],
 };
 
 export const PayrollSlice = createSlice({
@@ -27,16 +26,9 @@ export const PayrollSlice = createSlice({
     setSelectedSofPayroll: (state, action: PayloadAction<selectedSof[]>) => {
       state.selectedSof = action.payload;
     },
-    setListDestinationPayrollRedux: (
-      state,
-      action: PayloadAction<IListDestinationPayroll[]>
-    ) => {
-      state.listDestinationPayroll = action.payload;
-    },
   },
 });
 
-export const { setSelectedSofPayroll, setListDestinationPayrollRedux } =
-  PayrollSlice.actions;
+export const { setSelectedSofPayroll } = PayrollSlice.actions;
 
 export default PayrollSlice.reducer;

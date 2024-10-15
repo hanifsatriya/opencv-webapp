@@ -15,7 +15,7 @@ const LandingPage = onRenderImportPage(Landing);
 /* --------------------------------- Routes --------------------------------- */
 const publicPage: IRoutePage[] = [
   {
-    path: ROUTES.BASE_URL,
+    path: "/opencv-webapp/",
     element: <LandingPage />,
   },
 ];
