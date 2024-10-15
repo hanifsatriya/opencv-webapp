@@ -9,7 +9,7 @@ export default defineConfig(() => ({
     global: true,
     setupFiles: ["./vitest.setup.ts"],
   },
-  base: "/",
+  base: "/opencv-webapp/",
   resolve: {
     alias: {
       "@": "/src",
